@@ -1,54 +1,54 @@
 language: python
 cache:
   directories:
-    - "$PIP_CACHE_DIR"
-    - "$PIPENV_CACHE_DIR"
+  - "$PIP_CACHE_DIR"
+  - "$PIPENV_CACHE_DIR"
 branches:
   except:
-    - master
+  - master
 env:
   global:
-    - PIP_CACHE_DIR=$HOME/.cache/pip
-    - PIPENV_CACHE_DIR=$HOME/.cache/pipenv
+  - PIP_CACHE_DIR=$HOME/.cache/pip
+  - PIPENV_CACHE_DIR=$HOME/.cache/pipenv
 matrix:
   fast_finish: true
   include:
-    - name: Pip on Windows
-      os: windows
-      language: shell
-      env:
-      - PATH=/c/Python37:/c/Python37/Scripts:$PATH
-      - PBIN=pip
-      - PRUN="pipenv run"
-      before_install:
-      - choco install python openssl.light
-      install:
-      - pip install pipenv
-      - pipenv install -d
-      - pip list
-      - pipenv run pip list
-    - name: Conda on Windows
-      os: windows
-      language: shell
-      env:
-        - PATH="/c/tools/miniconda3/:/c/tools/miniconda3/Library/mingw-w64:/c/tools/miniconda3/Library/usr/bin:/c/tools/miniconda3/Library/bin:/c/tools/miniconda3/Scripts:/c/tools/miniconda3/bin:$PATH"
-        - PBIN=pip
-        - PRUN=
-      before_install:
-        - choco install miniconda3 openssl.light nsis
-        - conda config --set always_yes yes --set changeps1 no
-        - conda update -n base -c defaults conda python
-        - conda create -q -n test python=$TRAVIS_PYTHON_VERSION
-        - source activate test
-        - python -m pip install --upgrade pip
-      install:
-        - pip install pipenv
-        - pipenv lock -r | tail -n +2  > requirements.txt
-        - pip install -r requirements.txt
-        - pipenv lock -r --dev | tail -n +2 > requirements.txt
-        - pip install -r requirements.txt
-        - conda list
-        - pip list
+  - name: Pip on Windows
+    os: windows
+    language: shell
+    env:
+    - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+    - PBIN=pip
+    - PRUN="pipenv run"
+    before_install:
+    - choco install python openssl.light
+    install:
+    - pip install pipenv
+    - pipenv install -d
+    - pip list
+    - pipenv run pip list
+  - name: Conda on Windows
+    os: windows
+    language: shell
+    env:
+    - PATH="/c/tools/miniconda3/:/c/tools/miniconda3/Library/mingw-w64:/c/tools/miniconda3/Library/usr/bin:/c/tools/miniconda3/Library/bin:/c/tools/miniconda3/Scripts:/c/tools/miniconda3/bin:$PATH"
+    - PBIN=pip
+    - PRUN=
+    before_install:
+    - choco install miniconda3 openssl.light nsis
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -n base -c defaults conda python
+    - conda create -q -n test python=$TRAVIS_PYTHON_VERSION
+    - source activate test
+    - python -m pip install --upgrade pip
+    install:
+    - pip install pipenv
+    - pipenv lock -r | tail -n +2  > requirements.txt
+    - pip install -r requirements.txt
+    - pipenv lock -r --dev | tail -n +2 > requirements.txt
+    - pip install -r requirements.txt
+    - conda list
+    - pip list
 before_script:
 - |
   if [[ -n ${TRAVIS_TAG} ]]
@@ -68,7 +68,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-    secure: uD4bnS1EQTh7X848tsQkj6AJ4S3MFBt3sgUHNkuvgA+YYTIUfBZ2kBZQaP5W900MMon2PNQ3gHDYWH2V1nPeN8LFEKUZK0xBHJcxgX7TQfdGzG9+xrwAOmB2OTvtkXLC2Q8Lp6962C3X0nR4eyP7zeZYjzB7tnzgHYwbpqCfl9nbsqpiNYBg2Yy/Kp4nf0uhjc2aZ4ACKE5JVyypcklYzqP58uvFAvcli9tXGKS/D0kH1L8ol9Y1IbMxQpyGEnLxlET1lyygbpB2A+bN8NY9aKKXdQnfso53OZTuWqnQ4MlyagRkYUuhwiLSRjzKjGlZkj3RU+duX/GiLmyCUbXdN+pPdIRRUNB/YMygA33pP3waCeA3AbmQRMRu5U34UczMyQpiyiOBsWrlxGFLQdptfg7xgsqSqRTU7+Cuu/X/9tOQGg66IyVEnEP9a3TVkF8LPHXLcsTJCudHXL7Z9O51KPgEF6AQHan6CZq4LLTkWCPCQ4C6cM4wlZF/B4awywaN/dekTQRAclHwMxGAtGYs7j6fse38rw4J+ItXvwrVJMxiVrpTKsRFsVNjUF6dWOEeytGieM6cEy/UDgswHfjr8R2Mq25aIU2BXNzSBKn9Cf8dlc5O1UWCNfEBjd1V+UX2xujwabn1uEihfMy9tXF86kLPU62Agb3r1U2GpFHVRAI=
+    secure: SPn6Zx2ud6OpcexAMK6760ZuWe0tDbK6k9uXPD6aI2ZHB1OxLAblILNqjCtGniZ8Vniqz3d00Lt3aUt/OxKFUDEenzjv2PdtryzYsFNV2146U56m/uetwIVr4D2UNM2ClhXiRYYHWbZnKXg/1ZlOx560gYyBegHDRLCYcONCZ5VPP2JfpOZXMPoRD+nqEVywdIHPuompb1FotZwZxni2sBZhluUOj2ipQc4NLwfi9B8VCEkdRjSCvMOPb9NPWrDIvFkbqgZg2in79pYX1dwkuocLHXVZbFL8VRFCPBl5ypxxnXtYgphOfkR4PSk47qg/hddtMloqchhjoGwMLJNg+DuswfhtiJ13AcgR9GMqacrK+mraXgCVOAMGHvBpAfL9a0AIyEWZgijmNBYhgn063KL86Porv647WHjFc1+a1qk0fFEfsjFJ75Tgj/BWUowUaDP33dlDfviK401wzJG/ubFsrD+V7bNNm5BGBHemjCR7OPF3OaRMzTicskW3clWAw8V7fVeoaqrvVpmNDNxtJoFPboS1eoluxf+a8rFa1eCf9hTbQCzAa6hXaN3dRhvMx7XEd3VjTw1DSyUqmMJdx6DFMZYD55sNWXBy6kKt8fScbHRNTMGBN5zGLcO1D0hiHQ35VNeO9Ef9UalDMJH4BUUIjuf2dh/e6R7FnuGxrtQ=
   file_glob: true
   file: dist/pyjvcpj*.exe
   on:
