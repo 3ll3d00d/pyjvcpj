@@ -13,20 +13,6 @@ env:
 matrix:
   fast_finish: true
   include:
-  - name: Pip on Windows
-    os: windows
-    language: shell
-    env:
-    - PATH=/c/Python37:/c/Python37/Scripts:$PATH
-    - PBIN=pip
-    - PRUN="pipenv run"
-    before_install:
-    - choco install python openssl.light
-    install:
-    - pip install pipenv
-    - pipenv install -d
-    - pip list
-    - pipenv run pip list
   - name: Conda on Windows
     os: windows
     language: shell
