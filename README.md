@@ -6,11 +6,8 @@ Supports the JVC N5/7/9 range only
 
 # Config
 
-Run the app and then edit the generated config file (in $HOME/.pyjvcpj/pyjvcpj.yaml)
+Run the app and then edit the generated config file (in $HOME/.pyjvcpj/pyjvcpj.yaml) to add an IP address to your projector in the `pjip` field. 
  
-make sure to see an IP address to your PJ
-macros of multiple commands can be defined in config
-
 # API
 
 Exposes an API over HTTP via
