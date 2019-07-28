@@ -61,13 +61,12 @@ class Config:
         loads configuration from some predictable locations.
         :return: the config.
         """
-        config_path = path.join(self.config_path, self._name + ".yml")
-        if os.path.exists(config_path):
-            self.logger.warning("Loading config from " + config_path)
-            with open(config_path, 'r') as yml:
+        if os.path.exists(self.config_file):
+            self.logger.warning("Loading config from " + self.config_file)
+            with open(self.config_file, 'r') as yml:
                 return yaml.load(yml, Loader=yaml.FullLoader)
         default_config = self.load_default_config()
-        self.__store_config(default_config, config_path)
+        self.__store_config(default_config, self.config_file)
         return default_config
 
     def __store_config(self, config, config_path):
@@ -88,14 +87,18 @@ class Config:
         :return:
         """
         return {
-            'debug': True,
+            'debug': False,
             'port': 49199,
-            'debugLogging': True,
+            'debugLogging': False,
             'accessLogging': False,
-            'useTwisted': False,
+            'useTwisted': True,
             'pjmacros': {},
             'pjip': None,
         }
+
+    @property
+    def config_file(self):
+        return path.join(self.config_path, self._name + ".yml")
 
     @property
     def config_path(self):

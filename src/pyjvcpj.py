@@ -22,6 +22,8 @@ cfg = Config('pyjvcpj')
 resource_args = {
     'pj_controller': PJController(cfg)
 }
+if cfg.pj_ip is None:
+    raise AttributeError("pjip must be set in {self.config_file}")
 
 # GET: get info
 api.add_resource(Info, API_PREFIX + '/info', resource_class_kwargs=resource_args)
